@@ -2011,7 +2011,7 @@ impl Build {
                 {
                     "clang".to_string()
                 } else if target.contains("vxworks") {
-                    "wr-c++".to_string()
+                    if self.cpp { "wr-c++".to_string() } else { "wr-cc".to_string() }
                 } else if self.get_host()? != target {
                     let prefix = self.prefix_for_target(&target);
                     match prefix {
