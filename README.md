@@ -2,8 +2,6 @@
 
 A library to compile C/C++/assembly into a Rust library/application.
 
-[![Build Status](https://dev.azure.com/alexcrichton/cc-rs/_apis/build/status/alexcrichton.cc-rs?branchName=master)](https://dev.azure.com/alexcrichton/cc-rs/_build/latest?definitionId=5&branchName=master)
-
 [Documentation](https://docs.rs/cc)
 
 A simple library meant to be used as a build dependency with Cargo packages in
@@ -28,8 +26,6 @@ Next up, you'll want to write a build script like so:
 ```rust,no_run
 // build.rs
 
-extern crate cc;
-
 fn main() {
     cc::Build::new()
         .file("foo.c")
@@ -43,7 +39,7 @@ application will now have the C files `foo.c` and `bar.c` compiled into a file
 named libfoo.a. You can call the functions in Rust by declaring functions in
 your Rust code like so:
 
-```
+```rust,no_run
 extern {
     fn foo_function();
     fn bar_function();
@@ -143,8 +139,6 @@ required varies per platform, but there are three broad categories:
 `Build`:
 
 ```rust,no_run
-extern crate cc;
-
 fn main() {
     cc::Build::new()
         .cpp(true) // Switch to C++ library compilation.
@@ -156,6 +150,7 @@ fn main() {
 When using C++ library compilation switch, the `CXX` and `CXXFLAGS` env
 variables are used instead of `CC` and `CFLAGS` and the C++ standard library is
 linked to the crate target.
+Remember that C++ does name mangling so `extern "C"` might be required to enable rust linker to find your functions.
 
 ## CUDA C++ support
 
@@ -163,8 +158,6 @@ linked to the crate target.
 on `Build` (currently for GNU/Clang toolchains only):
 
 ```rust,no_run
-extern crate cc;
-
 fn main() {
     cc::Build::new()
         // Switch to CUDA C++ library compilation using NVCC.
